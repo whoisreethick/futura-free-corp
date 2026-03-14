@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Futura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Fjalla+One&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #f5f0e8;
+      font-family: 'Courier Prime', monospace;
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 3rem 2rem 2rem;
+      text-align: center;
+      border-bottom: 1px solid #d4c9b0;
+    }
+
+    .app-name {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      color: #9a8a72;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+
+    .name-display {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 3rem;
+      color: #2c2416;
+      letter-spacing: 3px;
+      min-height: 3.8rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 2.8rem;
+      background: #2c2416;
+      margin-left: 2px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .tagline {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.95rem;
+      color: #7a6a52;
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+
+    .input-row {
+      display: flex;
+      justify-content: center;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .name-input {
+      font-family: 'Courier Prime', monospace;
+      font-size: 1rem;
+      padding: 0.7rem 1rem;
+      border: 1.5px solid #b8a98a;
+      border-right: none;
+      background: #fffdf7;
+      color: #2c2416;
+      outline: none;
+      flex: 1;
+      border-radius: 4px 0 0 4px;
+    }
+
+    .name-input::placeholder { color: #b8a98a; }
+
+    .read-btn {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 0.95rem;
+      padding: 0.7rem 1.4rem;
+      background: #2c2416;
+      color: #f5f0e8;
+      border: 1.5px solid #2c2416;
+      cursor: pointer;
+      border-radius: 0 4px 4px 0;
+      letter-spacing: 2px;
+      transition: background 0.2s;
+    }
+
+    .read-btn:hover { background: #4a3d28; }
+
+    /* ── FEED ── */
+    .feed { display: none; max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+    .board-label {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 0.9rem;
+      color: #9a8a72;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    /* ── CORKBOARD ── */
+    .board {
+      background: #c8a96e;
+      border-radius: 6px;
+      padding: 1.75rem 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+      gap: 1.1rem;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.18);
+      margin-bottom: 2rem;
+      min-height: 120px;
+    }
+
+    .empty-board {
+      font-family: 'Courier Prime', monospace;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #8b6f3e;
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    /* ── POST-IT NOTES ── */
+    .note {
+      padding: 1rem 0.9rem 0.8rem;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: #2c2416;
+      border-radius: 2px;
+      position: relative;
+      animation: popin 0.35s ease;
+    }
+
+    @keyframes popin {
+      from { opacity: 0; transform: scale(0.88); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .note::before {
+      content: '';
+      position: absolute;
+      top: -7px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #7a5c30;
+      opacity: 0.55;
+    }
+
+    .note-y { background: #fef08a; }
+    .note-p { background: #fda4c8; }
+    .note-b { background: #93c5fd; }
+    .note-g { background: #86efac; }
+    .note-o { background: #fdba74; }
+
+    .note-meta {
+      font-size: 0.72rem;
+      color: #6b5a45;
+      margin-top: 0.6rem;
+      font-style: italic;
+    }
+
+    /* ── WRITE SECTION ── */
+    .write-section {
+      background: #eee8d8;
+      border: 1px solid #d4c9b0;
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .write-title {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 0.9rem;
+      color: #2c2416;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .msg-input {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.95rem;
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1.5px solid #b8a98a;
+      background: #fffdf7;
+      color: #2c2416;
+      outline: none;
+      resize: none;
+      border-radius: 4px;
+    }
+
+    .msg-input::placeholder { color: #b8a98a; }
+
+    .send-btn {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 0.85rem;
+      margin-top: 0.6rem;
+      padding: 0.5rem 1.2rem;
+      background: #2c2416;
+      color: #f5f0e8;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      letter-spacing: 2px;
+      transition: background 0.2s;
+    }
+
+    .send-btn:hover { background: #4a3d28; }
+
+    .status-msg {
+      font-size: 0.82rem;
+      font-style: italic;
+      color: #7a6a52;
+      margin-top: 0.5rem;
+      min-height: 1.2rem;
+    }
+
+    /* ── LOADING ── */
+    .loading {
+      font-family: 'Courier Prime', monospace;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #8b6f3e;
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO SECTION -->
+  <div class="hero">
+    <div class="app-name">Futura</div>
+    <div class="name-display" id="name-display">
+      <span class="cursor"></span>
+    </div>
+    <div class="tagline">strangers left something for you.</div>
+    <div class="input-row">
+      <input
+        class="name-input"
+        type="text"
+        placeholder="enter your name..."
+        id="name-input"
+        maxlength="32"
+      />
+      <button class="read-btn" onclick="loadMessages()">READ</button>
+    </div>
+  </div>
+
+  <!-- FEED SECTION -->
+  <div class="feed" id="feed">
+    <div class="board-label" id="board-label"></div>
+    <div class="board" id="board">
+      <div class="loading">loading...</div>
+    </div>
+    <div class="write-section">
+      <div class="write-title" id="write-title"></div>
+      <textarea
+        class="msg-input"
+        rows="3"
+        placeholder="write something kind..."
+        id="msg-input"
+        maxlength="280"
+      ></textarea>
+      <br/>
+      <button class="send-btn" onclick="sendMessage()">PIN ANONYMOUSLY</button>
+      <div class="status-msg" id="status"></div>
+    </div>
+  </div>
+
+  <script>
+    const API = 'http://127.0.0.1:8000';
+    const COLORS = ['note-y', 'note-p', 'note-b', 'note-g', 'note-o'];
+    const ROTATIONS = [-3, -1.5, 0, 1.5, 2.5, -2, 1, -0.5];
+    let currentName = '';
+
+    // ── TYPEWRITER ──
+    function typeWriter(text, el, cb) {
+      let i = 0;
+      el.innerHTML = '<span class="cursor"></span>';
+      const iv = setInterval(() => {
+        el.innerHTML = text.slice(0, i + 1) + '<span class="cursor"></span>';
+        i++;
+        if (i >= text.length) { clearInterval(iv); if (cb) cb(); }
+      }, 80);
+    }
+
+    // ── FORMAT TIME ──
+    function timeAgo(dateStr) {
+      const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000);
+      if (diff < 60) return 'just now';
+      if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+      if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+      return `${Math.floor(diff / 86400)}d ago`;
+    }
+
+    // ── RENDER NOTES ──
+    function renderNotes(messages) {
+      const board = document.getElementById('board');
+      board.innerHTML = '';
+      if (messages.length === 0) {
+        board.innerHTML = '<div class="empty-board">no messages yet. be the first to leave one 💌</div>';
+        return;
+      }
+      messages.forEach((m, i) => {
+        setTimeout(() => {
+          const note = document.createElement('div');
+          note.className = `note ${COLORS[i % COLORS.length]}`;
+          note.style.transform = `rotate(${ROTATIONS[i % ROTATIONS.length]}deg)`;
+          note.innerHTML = `${m.content}<div class="note-meta">— anonymous · ${timeAgo(m.created_at)}</div>`;
+          board.appendChild(note);
+        }, i * 120);
+      });
+    }
+
+    // ── LOAD MESSAGES ──
+    async function loadMessages() {
+      const input = document.getElementById('name-input').value.trim();
+      if (!input) return;
+      currentName = input;
+
+      typeWriter(input.toUpperCase(), document.getElementById('name-display'));
+      document.getElementById('feed').style.display = 'block';
+      document.getElementById('board-label').textContent = `messages for ${input.toLowerCase()}`;
+      document.getElementById('write-title').textContent = `leave a note for ${input.toLowerCase()}`;
+      document.getElementById('board').innerHTML = '<div class="loading">fetching notes...</div>';
+      document.getElementById('status').textContent = '';
+
+      try {
+        const res = await fetch(`${API}/messages/${input}`);
+        if (res.status === 404) { renderNotes([]); return; }
+        const data = await res.json();
+        renderNotes(data);
+      } catch (err) {
+        document.getElementById('board').innerHTML =
+          '<div class="empty-board">could not connect to server.</div>';
+      }
+    }
+
+    // ── SEND MESSAGE ──
+    async function sendMessage() {
+      const content = document.getElementById('msg-input').value.trim();
+      const status = document.getElementById('status');
+      if (!content) { status.textContent = 'write something first!'; return; }
+      if (!currentName) { status.textContent = 'search a name first!'; return; }
+
+      status.textContent = 'pinning your note...';
+
+      try {
+        const res = await fetch(`${API}/messages/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: currentName, content })
+        });
+        if (res.ok) {
+          status.textContent = 'note pinned! 💌';
+          document.getElementById('msg-input').value = '';
+          setTimeout(() => loadMessages(), 800);
+        } else {
+          status.textContent = 'something went wrong. try again.';
+        }
+      } catch (err) {
+        status.textContent = 'could not connect to server.';
+      }
+    }
+
+    // ── ENTER KEY ──
+    document.getElementById('name-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') loadMessages();
+    });
+  </script>
+
+</body>
+</html>
